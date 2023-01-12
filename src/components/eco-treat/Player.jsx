@@ -1,21 +1,27 @@
 import { useRef } from 'react';
-import { Vector3 } from 'three';
-
-import { useFrame, useThree } from '@react-three/fiber';
+import { AnimationMixer, Vector3 } from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { extend, useFrame, useLoader, useThree } from '@react-three/fiber';
 import { useController, useXR } from '@react-three/xr';
 import { useKeyboardControls } from '@react-three/drei';
 import { CapsuleCollider, RigidBody } from '@react-three/rapier';
 
-export default function Player({ children, ...props }) {
+extend({ GLTFLoader });
+
+export default function Player({ ...props }) {
+  const { scene } = useLoader(GLTFLoader, 'glbs/Soldier.glb');
+  const animate = scene.animations;
+  let mixer = new AnimationMixer(scene);
+
   const { camera } = useThree();
-  camera.position.set(0, 3, 0);
+  camera.position.set(0, 2, 0);
   const left = useController('left');
   const right = useController('right');
   const XRplayer = useXR().player;
   const direction = new Vector3();
   const rightDir = new Vector3();
   const [, get] = useKeyboardControls();
-  XRplayer.position.set(0, 10, 0);
+  XRplayer.position.set(134, 15, -129);
   const ref = useRef();
   useFrame((delta) => {
     XRplayer.position.set(...ref.current.translation());
@@ -53,15 +59,29 @@ export default function Player({ children, ...props }) {
       y: 0,
       z: (direction.z * fSpeed + rightDir.z * rSpeed) * 35,
     });
+
+    mixer.clipAction(animate[0]).play();
+    // player.children[1];
+    // console.log(XRplayer.position.x , XRplayer.position.z)
   });
 
   return (
-    <RigidBody
-      {...props}
-      ref={ref}
-      position={[XRplayer.position.x, XRplayer.position.y, XRplayer.position.z]}
-      enabledRotations={[false, false, false]}>
-      <CapsuleCollider args={[0.75, 0.5]} />
-    </RigidBody>
+    <>
+      {/* <primitive
+        object={player}
+        position={[5, 1, 10]}
+      /> */}
+      <RigidBody
+        colliders={'hull'}
+        mass={1}
+        type='dynamic'
+        ref={ref}
+        position={[XRplayer.position.x, XRplayer.position.y, XRplayer.position.z]}
+        enabledRotations={[false, false, false]}
+      >
+        <CapsuleCollider args={[0.75, 0.5]} />
+        {/* <primitive object={scene} /> */}
+      </RigidBody>
+    </>
   );
 }
