@@ -1,11 +1,12 @@
 import { Canvas } from '@react-three/fiber';
-import { KeyboardControls, OrbitControls, Preload } from '@react-three/drei';
+import { KeyboardControls, Preload } from '@react-three/drei';
 import { Debug, Physics } from '@react-three/rapier';
 import { Controllers, Hands, XR } from '@react-three/xr';
 import dynamic from 'next/dynamic';
+import Skys from './Skys';
 
 const Land = dynamic(() => import('../eco-treat/Land'), { ssr: true });
-const Player = dynamic(() => import('../eco-treat/Player'), { ssr: true });
+
 
 export default function Scene({ children, ...props }) {
   // Everything defined in here will persist between route changes, only children are swapped
@@ -23,9 +24,10 @@ export default function Scene({ children, ...props }) {
     >
       <Canvas
         shadows
-        camera={{ fov: 45 }}
+        camera={{ fov: 65 }}
         {...props}
       >
+        <Skys />
         <XR>
           <Hands />
           <Controllers />
@@ -33,8 +35,8 @@ export default function Scene({ children, ...props }) {
           <Physics gravity={[0, -200, 0]}>
             <Land>
               {children}
-              <Player />
             </Land>
+            {/* <Debug /> */}
           </Physics>
           <Preload all />
         </XR>
