@@ -16,14 +16,14 @@ export default function Park({ children, ...props }) {
   return (
     <Land receiveShadow>
       <ambientLight />
-      {/* <Model
+      <Model
         colliders='trimesh'
         position={[50, 0, 20]}
         type='fixed'
         objectName={'glbs/tent.glb'}
-      /> */}
+      />
       <Player />
-      {/* <Ocean position={[50, 0.1, 20]} /> */}
+      <Ocean position={[50, 0.1, 20]} />
     </Land>
   );
 }
