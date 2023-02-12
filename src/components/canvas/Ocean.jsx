@@ -6,12 +6,12 @@ import { Water } from 'three/examples/jsm/objects/Water.js';
 
 extend({ Water });
 
-export default function Ocean({ ...props}) {
+export default function Ocean({ ...props }) {
   const ref = useRef();
   const gl = useThree((state) => state.gl);
   const waterNormals = useLoader(
     THREE.TextureLoader,
-    'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/waternormals.jpg',
+    'https://static.wixstatic.com/media/38ebb6_50c433eba3864b91b73979c9028d21c2~mv2.jpg?dn=water%200342normal.jpg',
   );
 
   waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
