@@ -67,6 +67,8 @@ export default function Player({ ...props }) {
       actions?.Idle.stop();
       actions?.Walk.play();
     }
+
+    // console.table(XRplayer.position.x, XRplayer.position.y, XRplayer.position.z)
   });
 
   return (
@@ -80,10 +82,10 @@ export default function Player({ ...props }) {
         enabledRotations={[false, false, false]}
       >
         <CapsuleCollider args={[0.75, 0.5]} />
-        <primitive
+        {/* <primitive
           object={scene}
           scale={[4.7, 4.7, 4.7]}
-        />
+        /> */}
         <pointLight castShadow />
       </RigidBody>
     </>

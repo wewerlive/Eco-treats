@@ -38,7 +38,7 @@ export default function Scene({ children, ...props }) {
             </Land>
             {/* <Debug /> */}
           </Physics>
-          <Preload all />
+          {/* <Preload all /> */}
         </XR>
       </Canvas>
     </KeyboardControls>
