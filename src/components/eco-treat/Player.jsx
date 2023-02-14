@@ -8,7 +8,7 @@ import { CapsuleCollider, RigidBody } from '@react-three/rapier';
 
 extend({ GLTFLoader });
 
-export default function Player({ ...props }) {
+export default function Player({ moving }) {
   const { scene, animations } = useGLTF('glbs/Soldier.glb', true, true);
   const { actions } = useAnimations(animations, scene);
 
@@ -20,7 +20,7 @@ export default function Player({ ...props }) {
   const direction = new Vector3();
   const rightDir = new Vector3();
   const [, get] = useKeyboardControls();
-  XRplayer.position.set(134, 1, -129);
+  XRplayer.position.set(134, 6, -129);
   const ref = useRef();
   useFrame((delta) => {
     XRplayer.position.set(...ref.current.translation());
@@ -39,11 +39,11 @@ export default function Player({ ...props }) {
     fSpeed = fValue + bValue;
     rSpeed = lValue + rValue;
     rotate = rRValue + rLValue;
-    if (left && left.inputSource) {
+    if (left && left.inputSource && left.inputSource.gamepad) {
       fSpeed = left.inputSource.gamepad.axes[3] * -1;
       rSpeed = left.inputSource.gamepad.axes[2] * -1;
     }
-    if (right && right.inputSource) {
+    if (right && right.inputSource && right.inputSource.gamepad) {
       rotate = right.inputSource.gamepad.axes[2];
     }
     XRplayer.rotateOnAxis(new Vector3(0, 1, 0), rotate * 0.1 * -1);
@@ -52,12 +52,13 @@ export default function Player({ ...props }) {
     direction.y = 0;
     rightDir.x = direction.z;
     rightDir.z = -direction.x;
-
-    ref.current.setLinvel({
-      x: (direction.x * fSpeed + rightDir.x * rSpeed) * 35,
-      y: 0,
-      z: (direction.z * fSpeed + rightDir.z * rSpeed) * 35,
-    });
+    if (moving) {
+      ref.current.setLinvel({
+        x: (direction.x * fSpeed + rightDir.x * rSpeed) * 35,
+        y: 0,
+        z: (direction.z * fSpeed + rightDir.z * rSpeed) * 35,
+      });
+    }
 
     let velocity = ref.current.linvel();
     if (velocity.x == 0 && velocity.z == 0) {
@@ -80,10 +81,10 @@ export default function Player({ ...props }) {
         enabledRotations={[false, false, false]}
       >
         <CapsuleCollider args={[0.75, 0.5]} />
-        <primitive
+        {/* <primitive
           object={scene}
           scale={[4.7, 4.7, 4.7]}
-        />
+        /> */}
         <pointLight castShadow />
       </RigidBody>
     </>
