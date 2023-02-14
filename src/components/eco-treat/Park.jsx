@@ -5,6 +5,7 @@ import Ocean from '../canvas/Ocean';
 import Asset from '../canvas/Asset';
 import { RigidBody } from '@react-three/rapier';
 import { useGLTF } from '@react-three/drei';
+import Beach from '../canvas/Beach';
 
 const Player = dynamic(() => import('./Player'), { ssr: true });
 const Model = dynamic(() => import('../canvas/Model'), { ssr: true });
@@ -23,7 +24,8 @@ export default function Park({ children, ...props }) {
         objectName={'glbs/tent.glb'}
       />
       <Player />
-      <Ocean position={[50, 0.1, 20]} />
+      <Ocean position={[50, 0, 20]} />
+      <Beach />
     </Land>
   );
 }
