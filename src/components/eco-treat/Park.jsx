@@ -24,7 +24,7 @@ export default function Park({ children, ...props }) {
         objectName={'glbs/tent.glb'}
       />
       <Player />
-      <Ocean position={[50, 0, 20]} />
+      <Ocean position={[50, 0.1, 20]} />
       <Beach />
     </Land>
   );

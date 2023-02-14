@@ -22,8 +22,8 @@ export default function Beach({ height, width }) {
         console.log(meshRef)
         for (let i = 0; i < height; i++) {
             for (let j = 0; j < width; j++) {
-                anonymousObject.position.set(i * 10, 0, j * 10)
-                anonymousObject.rotation.set(0, 0, 0)
+                anonymousObject.position.set(i * 10, 10, j * 10)
+                anonymousObject.rotation.set(0, Math.random() * Math.PI, 0)
                 anonymousObject.updateMatrix()
                 meshRef.current.setMatrixAt(i * width + j, anonymousObject.matrix)
                 // meshRef.current.setColorAt(i * width + j, anonymousColour.set("blue"));
