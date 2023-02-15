@@ -3,55 +3,69 @@ Source: https://sketchfab.com/3d-models/sand-at-sunset-beach-1ac0847acae44ffe9c3
 Title: Sand at Sunset Beach
 */
 
-import React from 'react'
-import { Instance, Instances, useGLTF } from '@react-three/drei'
+import React, { useEffect, useMemo, useRef } from 'react';
+import { useGLTF, useTexture } from '@react-three/drei';
+import { Object3D } from 'three';
+import { RigidBody } from '@react-three/rapier';
 
 export default function Beach(props) {
-  const { nodes, materials } = useGLTF('glbs/beachSand-transformed.glb')
+  const { nodes } = useGLTF('glbs/sandSq.glb');
+  // const sand = useTexture('/img/textures/sandLarge.jpg');
+  // const sandExtruded = useTexture('/img/textures/sandSmall.jpg');
+
+  const meshRef = useRef();
+  const meshRef2 = useRef();
+  const object = useMemo(() => new Object3D(), []);
+
+  let height = 6;
+  let width = 6;
+  
+  useEffect(() => {
+    for (let i = 0; i < height; i++) {
+      for (let j = 0; j < width; j++) {
+        object.position.set(i * 20, 10, j * 20);
+        object.rotation.set(0, 3.2, 0);
+        object.updateMatrix();
+        meshRef.current.setMatrixAt(i * width + j, object.matrix);
+        // meshRef2.current.setMatrixAt(i * width + j, object.matrix);
+      }
+    }
+    meshRef.current.instanceMatrix.needsUpdate = true;
+    meshRef.current.material.needsUpdate = true;
+    // meshRef2.current.instanceMatrix.needsUpdate = true;
+    // meshRef2.current.material.needsUpdate = true;
+  });
+
   return (
-    <Instances
-      limit={100}
-      range={100}
-      geometry={nodes.Object_2.geometry}
-      material={materials.material0000}
-      castShadow
-      receiveShadow
-    >
-      <bufferGeometry
-        attach='geometry'
-        geometry={nodes.Object_2.geometry}
-      />
-      <meshPhongMaterial
-        attach='material'
-        material={materials.material0000}
-      />
-      <Instance>
-        <group
-          {...props}
-          rotation={[0.23, 0.06, 0.1]}
-        >
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Object_2.geometry}
-            material={materials.material0000}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Object_3.geometry}
-            material={materials.material0000}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Object_4.geometry}
-            material={materials.material0001}
-          />
-        </group>
-      </Instance>
-    </Instances>
+    <>
+      <instancedMesh
+        ref={meshRef}
+        args={[null, null, height * width]}
+      >
+        <bufferGeometry
+          attach='geometry'
+          {...nodes.Object_0.geometry}
+        />
+        <meshPhongMaterial
+          attach='material'
+          material={nodes.Object_0.material}
+        />
+      </instancedMesh>
+      {/* <instancedMesh
+        ref={meshRef2}
+        args={[null, null, height * width]}
+      >
+        <bufferGeometry
+          attach='geometry'
+          {...nodes.Object_0.geometry}
+        />
+        <meshPhongMaterial
+          attach='material'
+          material={nodes.Object_0.material}
+        />
+      </instancedMesh> */}
+    </>
   );
 }
 
-useGLTF.preload('glbs/beachSand-transformed.glb')
+useGLTF.preload('glbs/beachSand.glb');
