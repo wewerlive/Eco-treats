@@ -6,7 +6,7 @@ import { Water } from 'three/examples/jsm/objects/Water.js';
 
 extend({ Water });
 
-export default function Ocean({ ...props}) {
+export default function Ocean({ ...props }) {
   const ref = useRef();
   const gl = useThree((state) => state.gl);
   const waterNormals = useLoader(
@@ -21,9 +21,10 @@ export default function Ocean({ ...props}) {
       textureWidth: 512,
       textureHeight: 512,
       waterNormals,
+      alpha: 1,
       sunDirection: new THREE.Vector3(),
       sunColor: 0xeb8934,
-      waterColor: 0x0064b5,
+      waterColor: 0x006666,
       distortionScale: 40,
       fog: false,
       format: gl.encoding,

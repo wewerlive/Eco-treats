@@ -1,6 +1,5 @@
 import { useTexture } from '@react-three/drei';
 import { RigidBody } from '@react-three/rapier';
-
 export default function Land({ children, ...props }) {
   const land = useTexture('/img/textures/land.jpg');
   return (
